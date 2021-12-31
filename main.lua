@@ -1,19 +1,36 @@
-love.graphics.setDefaultFilter('nearest', 'nearest')
+sti = require('libraries/sti')
+anim8 = require 'libraries/anim8'
+require 'player'
+
+local background = love.graphics.newImage('assets/sprites/Assets_area_1/Background/subway_BG.png')
+screenWidth = 992
+screenHeight = 544
+
+local function setupGame()
+    love.graphics.setDefaultFilter('nearest', 'nearest')
+    love.window.setMode(screenWidth, screenHeight)
+    Map = sti("maps/1.lua", {"box2d"})
+    World = love.physics.newWorld(0, 0)
+    Map:box2d_init(World)
+    --Map.layers.solid.visible = false
+end
+
+local function setupPlayer()
+    player:load()
+end
+
+local function setupAnimations()
+    player.animations = {}
+    player.animations.idle = anim8.newAnimation(player.grid('1-6', 1), 0.1)
+    player.animations.run = anim8.newAnimation(player.grid('1-5', 2), 0.1)
+    player.animations.shooting = anim8.newAnimation(player.grid('3-4', 3), 0.1)
+    player.currentAnim = player.animations.idle
+end
 
 function love.load()
-    anim8 = require 'libraries/anim8'
-    
-    player = {}
-    player.x = 250
-    player.y = 250
-    player.speed = 2
-    player.sprite = love.graphics.newImage('assets/sprites/tile000.png')
-    player.spriteSheet = love.graphics.newImage('assets/sprites/SpriteSheet_player.png')
-    player.grid = anim8.newGrid( 45, 45, player.spriteSheet:getWidth(), player.spriteSheet:getHeight() )
-
-    player.animations = {}
-    player.animations.down = anim8.newAnimation(player.grid('1-4', 1), 0.2)
-    player.animations.idle = anim8.newAnimation(player.grid('1-6', 1), 0.2)
+    setupGame()
+    setupPlayer()
+    setupAnimations()
 
     love.window.setTitle('Hello love2d!')
     love.keyboard.keysPressed = {}
@@ -28,8 +45,8 @@ function love.keypressed(key)
         love.event.quit()
     end
 
-    if key == 'right' then
-        player.x = player.x + player.speed
+    if key == 'space' then
+        --jump
     end
 
     love.keyboard.keysPressed[key] = true
@@ -39,31 +56,54 @@ function love.keyboard.wasPressed(key)
     return love.keyboard.keysPressed[key]
 end
 
-function love.update(dt)
+local function blockPlayerOnBounds()
+    local screenBounds = 50
+    if player.x >= screenWidth - screenBounds then
+        player.x = screenWidth - screenBounds
+    elseif player.x <= screenBounds/4 then
+        player.x = screenBounds/4
+    end
+end
+
+local function playerMove(dt)
+    local moving = false
+
     if love.keyboard.isDown("right") then
-        player.x = player.x + player.speed
+        player.direction = 1
+        player.currentAnim = player.animations.run
+        moving = true
+        player.x = player.x + (player.speed * dt)
     end
 
     if love.keyboard.isDown("left") then
-        player.x = player.x - player.speed
+        player.direction = -1
+        player.currentAnim = player.animations.run
+        moving = true
+        player.x = player.x - (player.speed * dt)
     end
 
-    if love.keyboard.isDown("up") then
-        --
+    if moving == false then
+        player.currentAnim = player.animations.idle
     end
+end
 
-    if love.keyboard.isDown("down") then
-        --
-    end
-
+function love.update(dt)
+    player:update()
+    playerMove(dt)
+    blockPlayerOnBounds()
     love.keyboard.keysPressed = {}
-    player.animations.idle:update(dt)
+    player.currentAnim:update(dt)
 end
 
 function love.draw()
-    -- draw your stuff here
-    love.graphics.print('Welcome to the Love2d world!', 10, 10)
-    --love.graphics.draw(player.sprite, player.x, player.y)
-    player.animations.idle:draw(player.spriteSheet, player.x, player.y, nil, 1)
+    love.graphics.draw(background, screenWidth/2, screenHeight/2, nil, 2, 2, background:getWidth()/2, background:getHeight()/2)
+
+    Map:draw(0, -125, 2)
+    love.graphics.push()
+    love.graphics.scale(2, 2)
+    love.graphics.pop()
+
+    player:draw()
+    love.graphics.print(player.x, 10, 10)
 end
 
