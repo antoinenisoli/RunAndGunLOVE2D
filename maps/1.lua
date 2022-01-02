@@ -211,7 +211,7 @@ return {
       parallaxy = 1,
       tintcolor = { 98, 98, 98 },
       properties = {
-        ["collide"] = true
+        ["collidable"] = true
       },
       objects = {
         {
@@ -226,7 +226,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["collider"] = true
+            ["collidable"] = true
           }
         },
         {
@@ -241,7 +241,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["collider"] = true
+            ["collidable"] = true
           }
         },
         {
@@ -256,7 +256,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["collider"] = true
+            ["collidable"] = true
           }
         }
       }

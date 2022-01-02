@@ -98,21 +98,21 @@
  </layer>
  <objectgroup color="#00ff00" id="4" name="solid" tintcolor="#626262" offsetx="0.333333" offsety="0.333333">
   <properties>
-   <property name="collide" type="bool" value="true"/>
+   <property name="collidable" type="bool" value="true"/>
   </properties>
   <object id="2" x="0" y="370.667" width="400" height="29.3333">
    <properties>
-    <property name="collider" type="bool" value="true"/>
+    <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
   <object id="4" x="272.333" y="338.5" width="31" height="28.6666">
    <properties>
-    <property name="collider" type="bool" value="true"/>
+    <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
   <object id="7" x="-0.333333" y="242.333" width="110.667" height="12.3333">
    <properties>
-    <property name="collider" type="bool" value="true"/>
+    <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>
