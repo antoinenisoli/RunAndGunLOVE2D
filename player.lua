@@ -34,7 +34,8 @@ function player:setupPhysics()
 end
 
 function player:load()
-    self.direction = 1
+    self.directionX = 1
+    self.directionY = 0
 
     self:setupPhysics()
     self:setupAnimations()
@@ -45,30 +46,47 @@ function player:update(dt)
     self:syncPhysics()
     self:move(dt)
     self:applyGravity(dt)
+    self:manageDirections()
+end
+
+function player:manageDirections()
+    if love.keyboard.isDown("up", "z") then
+        self.directionY = -1
+        --self.currentAnim = self.animations.run
+    elseif love.keyboard.isDown("down", "s") then
+        self.directionY = 1
+        --self.currentAnim = self.animations.run
+    else
+        self.directionY = 0
+    end
 end
 
 function player:move(dt)
     local moving = false
 
     if love.keyboard.isDown("right", "d") then
-        self.direction = 1
+        self.directionX = 1
         self.currentAnim = self.animations.run
         moving = true
-
         self.xVel = math.min(self.xVel + self.acceleration * dt, self.maxSpeed)
     elseif love.keyboard.isDown("left", "q") then
-        self.direction = -1
+        self.directionX = -1
         self.currentAnim = self.animations.run
         moving = true
-
         self.xVel = math.max(self.xVel - self.acceleration * dt, -self.maxSpeed)
     else
-        player:applyFriction(dt)
+        self:applyFriction(dt)
     end
 
     if moving == false then
         self.currentAnim = self.animations.idle
     end
+end
+
+function player:land(collision)
+    self.currentGroundCollision = collision
+    self.grounded = true
+    self.yVel = 0
 end
 
 function player:beginContact(a, b, collision)
@@ -88,12 +106,6 @@ function player:beginContact(a, b, collision)
             self.yVel = 0
         end
     end
-end
-
-function player:land(collision)
-    self.currentGroundCollision = collision
-    self.grounded = true
-    self.yVel = 0
 end
 
 function player:endContact(a, b, collision)
@@ -122,6 +134,17 @@ function player:applyGravity(dt)
     end
 end
 
+function love.mousepressed(x, y, button, istouch)
+    if button == 1 then -- Versions prior to 0.10.0 use the MouseConstant 'l'
+       player:shoot()
+    end
+ end
+
+function player:shoot()
+    local newBullet = bullet.new("e", player.x, player.y)
+    table.insert(GameObjects, newBullet)
+end
+
 function player:applyFriction(dt)
     if self.xVel > 0 then
         self.xVel = math.max(self.xVel - self.friction * dt, 0)
@@ -142,5 +165,5 @@ function player:draw()
     love.graphics.rectangle('line', self.x - self.width/2, self.y - self.height/2, self.width, self.height)
     love.graphics.setColor(255, 255, 255, 1)
 
-    self.currentAnim:draw(self.spriteSheet, self.x, self.y - self.height*1.5, nil, self.direction, 1, self.sprite:getHeight()/2, 0)
+    self.currentAnim:draw(self.spriteSheet, self.x, self.y - self.height*1.25, nil, self.directionX, 1, self.sprite:getHeight()/2, 0)
 end

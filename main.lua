@@ -7,7 +7,7 @@ local worldScale = 1.5
 local background = love.graphics.newImage('assets/sprites/Assets_area_1/Background/subway_BG.png')
 screenWidth = 992
 screenHeight = 544
-allBullets = {}
+GameObjects = {}
 
 local function setupGame()
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -27,12 +27,23 @@ function love.load()
     love.keyboard.keysPressed = {}
 end
 
+function love.conf(t)
+	t.console = true
+end
+
 function beginContact(a, b, collision)
+    for i, instance in ipairs(GameObjects) do
+        if instance:beginContact(a, b, collision) then return end
+    end
+
     player:beginContact(a, b, collision)
 end
 
 function endContact(a, b, collision)
     player:endContact(a, b, collision)
+    for i, instance in ipairs(GameObjects) do
+        instance:beginContact(a, b, collision)
+    end
 end
 
 function love.resize(w, h)
@@ -55,19 +66,10 @@ function love.keyboard.wasPressed(key)
     return love.keyboard.keysPressed[key]
 end
 
-function love.mousepressed(x, y, button, istouch)
-    if button == 1 then -- Versions prior to 0.10.0 use the MouseConstant 'l'
-       printx = x
-       printy = y
-       local newBullet = bullet.new("e", player.x, player.y)
-       table.insert(allBullets, newBullet)
-    end
- end
-
 function love.update(dt)
     World:update(dt)
     player:update(dt)
-    for i, instance in ipairs(allBullets) do
+    for i, instance in ipairs(GameObjects) do
         instance:update(dt)
     end
 
@@ -81,7 +83,7 @@ function love.draw()
     love.graphics.push()
     love.graphics.scale(worldScale, worldScale)
     player:draw()
-    for i, instance in ipairs(allBullets) do
+    for i, instance in ipairs(GameObjects) do
         instance:draw()
     end
     love.graphics.pop()
