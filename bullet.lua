@@ -1,4 +1,3 @@
-require 'player'
 require 'explosionVFX'
 bullet = {}
 bullet.__index = bullet
@@ -18,13 +17,17 @@ function bullet.new(name, x, y)
     instance.lifetime = 10
     instance.toBeRemoved = false
 
-    instance.physics = {}
-    instance.physics.body = love.physics.newBody(World, instance.x, instance.y, "dynamic")
-    instance.physics.body:setFixedRotation(true)
-    instance.physics.shape = love.physics.newRectangleShape(instance.width, instance.height)
-    instance.physics.fixture = love.physics.newFixture(instance.physics.body, instance.physics.shape)
-    instance.physics.fixture:setSensor(true)
+    instance:setupPhysics()
     return instance
+end
+
+function bullet:setupPhysics()
+    self.physics = {}
+    self.physics.body = love.physics.newBody(World, self.x, self.y, "dynamic")
+    self.physics.body:setFixedRotation(true)
+    self.physics.shape = love.physics.newRectangleShape(self.width, self.height)
+    self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape)
+    self.physics.fixture:setSensor(true)
 end
 
 function bullet:syncPhysics(dt)
@@ -39,7 +42,7 @@ end
 function bullet:beginContact(a, b, collision)
     if self.physics.fixture == a or b == self.physics.fixture then
         if player.physics.fixture ~= a and b ~= player.physics.fixture then
-            self.toBeRemoved = true
+            --self.toBeRemoved = true
         end
 
         return true
@@ -56,22 +59,28 @@ function bullet:checkRemove()
     end
 end
 
-function bullet:draw()
+function bullet:drawCollider()
     love.graphics.setColor(0, 255, 0, 1)
     love.graphics.rectangle('line', self.x - self.width/2, self.y - self.height/2, self.width, self.height)
     love.graphics.setColor(255, 255, 255, 1)
+end
 
+function bullet:draw()
+    self:drawCollider()
     local s = 1.3
     love.graphics.draw(self.image, self.x, self.y, math.rad(90) * self.directionY, s, s, self.width/2, self.height/2)
 end
 
 function bullet:destroy()
-    for i, instance in ipairs(GameObjects) do
+    removeGameobject(self)
+
+    for i, instance in ipairs(PlayerBullets) do
         if instance == self then
             self.physics.body:destroy()
-            table.remove(GameObjects, i)
+            table.remove(PlayerBullets, i)
             local vfx = explosionVFX.new(self.x, self.y)
             table.insert(GameObjects, vfx)
+            break
         end
     end
 end

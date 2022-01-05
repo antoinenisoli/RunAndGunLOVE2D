@@ -1,3 +1,4 @@
+require 'bullet'
 player = {}
 
 function player:setupAnimations()
@@ -143,6 +144,7 @@ function love.mousepressed(x, y, button, istouch)
 function player:shoot()
     local newBullet = bullet.new("e", player.x, player.y)
     table.insert(GameObjects, newBullet)
+    table.insert(PlayerBullets, newBullet)
 end
 
 function player:applyFriction(dt)

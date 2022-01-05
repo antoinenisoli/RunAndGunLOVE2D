@@ -1,13 +1,14 @@
-sti = require('libraries/sti') --for tilemaps
+local sti = require('libraries/sti') --for tilemaps
 anim8 = require 'libraries/anim8' --for animations
 require 'player'
-require 'bullet'
+require 'enemy'
 
 local worldScale = 1.5
 local background = love.graphics.newImage('assets/sprites/Assets_area_1/Background/subway_BG.png')
 screenWidth = 992
 screenHeight = 544
 GameObjects = {}
+PlayerBullets = {}
 
 local function setupGame()
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -17,11 +18,21 @@ local function setupGame()
     World:setCallbacks(beginContact, endContact)
     Map:box2d_init(World)
     --Map.layers.solid.visible = false
+
+    for i, spawner in ipairs(Map.layers.enemies.objects) do
+        if spawner.properties.enemySpawner then
+            local newEnemy = enemy.new(spawner.x, spawner.y, 1)
+            table.insert(GameObjects, newEnemy)
+        end
+    end
 end
 
 function love.load()
     setupGame()
     player:load() 
+    for i, spawner in ipairs(Map.layers.playerSpawner.objects) do
+        player.physics.body:setPosition(spawner.x, spawner.y)
+    end
 
     love.window.setTitle('Run&Gun')
     love.keyboard.keysPressed = {}
@@ -46,8 +57,12 @@ function endContact(a, b, collision)
     end
 end
 
-function love.resize(w, h)
-    -- ...
+function removeGameobject(gameObject)
+    for i, instance in ipairs(GameObjects) do
+        if instance == gameObject then
+            table.remove(GameObjects, i)
+        end
+    end
 end
 
 function love.keypressed(key)
@@ -77,15 +92,16 @@ function love.update(dt)
 end
 
 function love.draw()
+    love.graphics.push()
     love.graphics.draw(background, screenWidth/2, screenHeight/2, nil, 2, 2, background:getWidth()/2, background:getHeight()/2)
     
     Map:draw(0, 0, worldScale)
-    love.graphics.push()
     love.graphics.scale(worldScale, worldScale)
     player:draw()
     for i, instance in ipairs(GameObjects) do
         instance:draw()
     end
+
     love.graphics.pop()
 
     love.graphics.print(player.x, 10, 10)
