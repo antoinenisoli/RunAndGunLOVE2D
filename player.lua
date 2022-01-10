@@ -10,12 +10,19 @@ function player:setupAnimations()
     self.animations.idle = anim8.newAnimation(self.grid('1-6', 1), 0.1)
     self.animations.jumping = anim8.newAnimation(self.grid('8-8', 2), 0.1)
     self.animations.run = anim8.newAnimation(self.grid('7-8', 1, '1-6', 2), 0.1)
-    self.animations.death = anim8.newAnimation(self.grid('7-8', 6, '1-3', 7), 0.1)
+    self.animations.death = anim8.newAnimation(self.grid('7-8', 6, '1-3', 7), 0.1, 'pauseAtEnd')
+
     self.animations.shootRun = anim8.newAnimation(self.grid('1-8', 4), 0.1)
     self.animations.shootRunUp = anim8.newAnimation(self.grid('1-8', 5), 0.1)
+
+    self.animations.shootJumping = anim8.newAnimation(self.grid('1-2', 6), 0.1)
+    self.animations.shootJumpingUp = anim8.newAnimation(self.grid('3-4', 6), 0.1)
+    self.animations.shootJumpingDown = anim8.newAnimation(self.grid('5-6', 6), 0.1)
+
     self.animations.shootIdle = anim8.newAnimation(self.grid('3-4', 3), 0.1)
-    self.animations.shootUp = anim8.newAnimation(self.grid('5-6', 3), 0.1)
-    self.animations.shootDown = anim8.newAnimation(self.grid('5-6', 6), 0.1)
+    self.animations.shootIdleUp = anim8.newAnimation(self.grid('5-6', 3), 0.1)
+    self.animations.shootIdleDown = anim8.newAnimation(self.grid('5-6', 6), 0.1)
+
     self.currentAnim = self.animations.idle
 end
 
@@ -44,7 +51,7 @@ function player:setupHealth()
     self.dead = false
     self.hitTimer = 0
     self.hitDuration = 0.1
-    self.maxHealth = 5
+    self.maxHealth = 1
     self.currentHealth = self.maxHealth
     self.hit = false
 end
@@ -79,16 +86,10 @@ function player:manageDirections()
         self.directionY = -1
         self.shootPos.x = self.x
         self.shootPos.y = self.y - 25
-        if self.isShooting then
-            self.currentAnim = self.animations.shootUp
-        end
     elseif love.keyboard.isDown("down", "s") then
         self.directionY = 1
         self.shootPos.x = self.x
         self.shootPos.y = self.y + 5
-        if self.isShooting then
-            self.currentAnim = self.animations.shootDown
-        end
     else
         self.directionY = 0
     end
@@ -111,7 +112,7 @@ function player:move(dt)
         self:applyFriction(dt)
     end
 
-    if moving == false then
+    if not moving then
         self.currentAnim = self.animations.idle
     end
 end
@@ -163,15 +164,24 @@ function player:syncPhysics()
     self.shootPos.y = self.y - 5
 end
 
-function player:applyGravity(dt)
+function player:inAir(dt)
     if not self.grounded then
         self.yVel = self.yVel + self.gravity * dt
+        if not self.isShooting then
+            self.currentAnim = self.animations.jumping
+        end
     end
 end
 
 function player:destroy()
-    self.currentAnim = self.animations.death
     self.dead = true
+    self:respawn()
+end
+
+function player:respawn()
+    self.dead = false
+    self.currentHealth = self.maxHealth
+    self.physics.body:setPosition(playerSpawner.x, playerSpawner.y)
 end
 
  function player:takeDmg(value)
@@ -213,32 +223,38 @@ function player:drawGizmos()
     love.graphics.circle('line', self.shootPos.x, self.shootPos.y, 5) --shoot pos
 end
 
-function player:update(dt)
-    if self.dead then return end
-
-    self.currentAnim:update(dt)
-    self:manageHit(dt)
-    self:syncPhysics()
-    self:move(dt)
-    self:applyGravity(dt)
-    self:manageDirections()
-    if not self.grounded then
-        self.currentAnim = self.animations.jumping
-    end
-
+function player:shooting(dt)
     if love.mouse.isDown(1) then
 		self.shootTimer = self.shootTimer + dt   
-        self.isShooting = true        
-
-        if self.directionY == 0 then
-            if self.xVel ~= 0 then
-                self.currentAnim = self.animations.shootRun
+        self.isShooting = true     
+        
+        if not self.grounded then
+            if self.directionY == -1 then
+                self.currentAnim = self.animations.shootJumpingUp
+            elseif self.directionY == 1 then
+                self.currentAnim = self.animations.shootJumpingDown
             else
-                self.currentAnim = self.animations.shootIdle
+                self.currentAnim = self.animations.shootJumping
             end
         else
-            if self.xVel ~= 0 then
-                self.currentAnim = self.animations.shootRunUp
+            if self.directionY == -1 then
+                if self.xVel ~= 0 then
+                    self.currentAnim = self.animations.shootRunUp
+                else
+                    self.currentAnim = self.animations.shootIdleUp
+                end
+            elseif self.directionY == 1 then
+                if self.xVel ~= 0 then
+                    self.currentAnim = self.animations.shootIdleDown
+                else
+                    self.currentAnim = self.animations.shootIdleDown
+                end
+            else
+                if self.xVel ~= 0 then
+                    self.currentAnim = self.animations.shootRun
+                else
+                    self.currentAnim = self.animations.shootIdle
+                end
             end
         end
 
@@ -252,8 +268,24 @@ function player:update(dt)
     end
 end
 
+function player:update(dt)
+    if self.dead and self.currentAnim ~= self.animations.death then
+        self.currentAnim = self.animations.death
+    end
+
+    self:manageHit(dt)
+    self.currentAnim:update(dt)
+    if self.dead then return end
+
+    self:syncPhysics()
+    self:move(dt)
+    self:inAir(dt)
+    self:manageDirections()
+    self:shooting(dt)
+end
+
 function player:draw()
-    if self.hit then
+    if self.hit and not self.dead then
         love.graphics.setShader(shaders.hitFlashShader())
     end
 

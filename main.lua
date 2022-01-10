@@ -11,6 +11,7 @@ GameObjects = {}
 PlayerBullets = {}
 EnemyBullets = {}
 Enemies = {}
+playerSpawner = {}
 
 local function spawnEnemies()
     for i, spawner in ipairs(Map.layers.enemies.objects) do
@@ -43,6 +44,8 @@ function love.load()
     setupGame()
     player:load() 
     for i, spawner in ipairs(Map.layers.playerSpawner.objects) do
+        playerSpawner.x = spawner.x
+        playerSpawner.y = spawner.y
         player.physics.body:setPosition(spawner.x, spawner.y)
     end
 
