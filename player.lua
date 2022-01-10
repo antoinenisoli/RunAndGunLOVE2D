@@ -1,4 +1,4 @@
-require 'bullet'
+require 'bulletPlayer'
 player = {}
 
 function player:setupAnimations()
@@ -8,8 +8,14 @@ function player:setupAnimations()
 
     self.animations = {}
     self.animations.idle = anim8.newAnimation(self.grid('1-6', 1), 0.1)
-    self.animations.run = anim8.newAnimation(self.grid('1-5', 2), 0.1)
-    self.animations.shooting = anim8.newAnimation(self.grid('3-4', 3), 0.1)
+    self.animations.jumping = anim8.newAnimation(self.grid('8-8', 2), 0.1)
+    self.animations.run = anim8.newAnimation(self.grid('7-8', 1, '1-6', 2), 0.1)
+    self.animations.death = anim8.newAnimation(self.grid('7-8', 6, '1-3', 7), 0.1)
+    self.animations.shootRun = anim8.newAnimation(self.grid('1-8', 4), 0.1)
+    self.animations.shootRunUp = anim8.newAnimation(self.grid('1-8', 5), 0.1)
+    self.animations.shootIdle = anim8.newAnimation(self.grid('3-4', 3), 0.1)
+    self.animations.shootUp = anim8.newAnimation(self.grid('5-6', 3), 0.1)
+    self.animations.shootDown = anim8.newAnimation(self.grid('5-6', 6), 0.1)
     self.currentAnim = self.animations.idle
 end
 
@@ -34,29 +40,55 @@ function player:setupPhysics()
     self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape)
 end
 
+function player:setupHealth()
+    self.dead = false
+    self.hitTimer = 0
+    self.hitDuration = 0.1
+    self.maxHealth = 5
+    self.currentHealth = self.maxHealth
+    self.hit = false
+end
+
 function player:load()
     self.directionX = 1
     self.directionY = 0
 
+    self.shootRate = 0.2
+    self.shootTimer = self.shootRate
+    self.isShooting = false
+
     self:setupPhysics()
     self:setupAnimations()
+    self:setupHealth()
+
+    self.shootPos = {}
+    self.shootPos.x = self.x
+    self.shootPos.y = self.y
 end
 
-function player:update(dt)
-    self.currentAnim:update(dt)
-    self:syncPhysics()
-    self:move(dt)
-    self:applyGravity(dt)
-    self:manageDirections()
+function player:manageHit(dt)
+    self.dead = self.currentHealth <= 0
+    self.hitTimer = self.hitTimer + dt
+    if self.hitTimer > self.hitDuration and self.hit then
+        self.hit = false
+    end
 end
 
 function player:manageDirections()
     if love.keyboard.isDown("up", "z") then
         self.directionY = -1
-        --self.currentAnim = self.animations.run
+        self.shootPos.x = self.x
+        self.shootPos.y = self.y - 25
+        if self.isShooting then
+            self.currentAnim = self.animations.shootUp
+        end
     elseif love.keyboard.isDown("down", "s") then
         self.directionY = 1
-        --self.currentAnim = self.animations.run
+        self.shootPos.x = self.x
+        self.shootPos.y = self.y + 5
+        if self.isShooting then
+            self.currentAnim = self.animations.shootDown
+        end
     else
         self.directionY = 0
     end
@@ -92,7 +124,6 @@ end
 
 function player:beginContact(a, b, collision)
     if self.grounded == true then return end
-
     local nx, ny = collision:getNormal()
     if self.physics.fixture == a then
         if ny > 0 then
@@ -127,6 +158,9 @@ function player:syncPhysics()
     elseif self.x <= screenBounds/4 then
         self.x = screenBounds/4
     end
+
+    self.shootPos.x = self.x + (15 * self.directionX)
+    self.shootPos.y = self.y - 5
 end
 
 function player:applyGravity(dt)
@@ -135,16 +169,25 @@ function player:applyGravity(dt)
     end
 end
 
-function love.mousepressed(x, y, button, istouch)
-    if button == 1 then -- Versions prior to 0.10.0 use the MouseConstant 'l'
-       player:shoot()
+function player:destroy()
+    self.currentAnim = self.animations.death
+    self.dead = true
+end
+
+ function player:takeDmg(value)
+    self.hitTimer = 0
+    self.currentHealth = self.currentHealth - value
+    if self.dead then
+        self:destroy()
     end
- end
+end
 
 function player:shoot()
-    local newBullet = bullet.new("e", player.x, player.y)
-    table.insert(GameObjects, newBullet)
-    table.insert(PlayerBullets, newBullet)
+    if self.dead then return end
+
+    local newbulletPlayer = bulletPlayer.new("bullet", self.shootPos.x, self.shootPos.y, self.directionX)
+    table.insert(GameObjects, newbulletPlayer)
+    table.insert(PlayerBullets, newbulletPlayer)
 end
 
 function player:applyFriction(dt)
@@ -162,10 +205,59 @@ function player:jump()
     end
 end
 
-function player:draw()
+function player:drawGizmos()
     love.graphics.setColor(0, 255, 0, 1)
-    love.graphics.rectangle('line', self.x - self.width/2, self.y - self.height/2, self.width, self.height)
+    love.graphics.rectangle('line', self.x - self.width/2, self.y - self.height/2, self.width, self.height) --collider
     love.graphics.setColor(255, 255, 255, 1)
 
-    self.currentAnim:draw(self.spriteSheet, self.x, self.y - self.height*1.25, nil, self.directionX, 1, self.sprite:getHeight()/2, 0)
+    love.graphics.circle('line', self.shootPos.x, self.shootPos.y, 5) --shoot pos
+end
+
+function player:update(dt)
+    if self.dead then return end
+
+    self.currentAnim:update(dt)
+    self:manageHit(dt)
+    self:syncPhysics()
+    self:move(dt)
+    self:applyGravity(dt)
+    self:manageDirections()
+    if not self.grounded then
+        self.currentAnim = self.animations.jumping
+    end
+
+    if love.mouse.isDown(1) then
+		self.shootTimer = self.shootTimer + dt   
+        self.isShooting = true        
+
+        if self.directionY == 0 then
+            if self.xVel ~= 0 then
+                self.currentAnim = self.animations.shootRun
+            else
+                self.currentAnim = self.animations.shootIdle
+            end
+        else
+            if self.xVel ~= 0 then
+                self.currentAnim = self.animations.shootRunUp
+            end
+        end
+
+        if self.shootTimer > self.shootRate then
+            self.shootTimer = 0
+            self:shoot()
+        end
+	else
+        self.shootTimer = self.shootRate
+        self.isShooting = false
+    end
+end
+
+function player:draw()
+    if self.hit then
+        love.graphics.setShader(shaders.hitFlashShader())
+    end
+
+    self.currentAnim:draw(self.spriteSheet, self.x, self.y - self.height*1.25, nil, self.directionX, 1, self.height, 0)
+    love.graphics.setShader()
+    self:drawGizmos()
 end

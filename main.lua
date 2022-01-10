@@ -9,6 +9,23 @@ screenWidth = 992
 screenHeight = 544
 GameObjects = {}
 PlayerBullets = {}
+EnemyBullets = {}
+Enemies = {}
+
+local function spawnEnemies()
+    for i, spawner in ipairs(Map.layers.enemies.objects) do
+        if spawner.properties.enemySpawner then
+            local dir = -1
+            if math.random(0,100) > 50 then
+                dir = 1
+            end
+
+            local newEnemy = enemy.new(spawner.x, spawner.y, dir)
+            table.insert(GameObjects, newEnemy)
+            table.insert(Enemies, newEnemy)
+        end
+    end
+end
 
 local function setupGame()
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -18,16 +35,11 @@ local function setupGame()
     World:setCallbacks(beginContact, endContact)
     Map:box2d_init(World)
     --Map.layers.solid.visible = false
-
-    for i, spawner in ipairs(Map.layers.enemies.objects) do
-        if spawner.properties.enemySpawner then
-            local newEnemy = enemy.new(spawner.x, spawner.y, 1)
-            table.insert(GameObjects, newEnemy)
-        end
-    end
+    spawnEnemies()
 end
 
 function love.load()
+    math.randomseed(os.time())
     setupGame()
     player:load() 
     for i, spawner in ipairs(Map.layers.playerSpawner.objects) do
