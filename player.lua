@@ -1,5 +1,7 @@
-require 'bulletPlayer'
-player = {}
+local shaders = require 'shaders'
+local anim8 = require 'libraries/anim8' --for animations
+local bulletPlayer = require 'bulletPlayer'
+local player = {}
 
 function player:setupAnimations()
     self.sprite = love.graphics.newImage('assets/sprites/tile000.png')
@@ -96,24 +98,18 @@ function player:manageDirections()
 end
 
 function player:move(dt)
-    local moving = false
+    self.moving = false
 
     if love.keyboard.isDown("right", "d") then
         self.directionX = 1
-        self.currentAnim = self.animations.run
-        moving = true
+        self.moving = true
         self.xVel = math.min(self.xVel + self.acceleration * dt, self.maxSpeed)
     elseif love.keyboard.isDown("left", "q") then
         self.directionX = -1
-        self.currentAnim = self.animations.run
-        moving = true
+        self.moving = true
         self.xVel = math.max(self.xVel - self.acceleration * dt, -self.maxSpeed)
     else
         self:applyFriction(dt)
-    end
-
-    if not moving then
-        self.currentAnim = self.animations.idle
     end
 end
 
@@ -167,9 +163,6 @@ end
 function player:inAir(dt)
     if not self.grounded then
         self.yVel = self.yVel + self.gravity * dt
-        if not self.isShooting then
-            self.currentAnim = self.animations.jumping
-        end
     end
 end
 
@@ -179,15 +172,15 @@ function player:destroy()
 end
 
 function player:respawn()
+    print("respawn");
     self.dead = false
     self.currentHealth = self.maxHealth
-    self.physics.body:setPosition(playerSpawner.x, playerSpawner.y)
 end
 
  function player:takeDmg(value)
     self.hitTimer = 0
     self.currentHealth = self.currentHealth - value
-    if self.dead then
+    if self.currentHealth <= 0 then
         self:destroy()
     end
 end
@@ -195,7 +188,7 @@ end
 function player:shoot()
     if self.dead then return end
 
-    local newbulletPlayer = bulletPlayer.new("bullet", self.shootPos.x, self.shootPos.y, self.directionX)
+    local newbulletPlayer = bulletPlayer.new("bullet", self.shootPos.x, self.shootPos.y, self.directionX, self.directionY)
     table.insert(GameObjects, newbulletPlayer)
     table.insert(PlayerBullets, newbulletPlayer)
 end
@@ -227,7 +220,19 @@ function player:shooting(dt)
     if love.mouse.isDown(1) then
 		self.shootTimer = self.shootTimer + dt   
         self.isShooting = true     
-        
+
+        if self.shootTimer > self.shootRate then
+            self.shootTimer = 0
+            self:shoot()
+        end
+	else
+        self.shootTimer = self.shootRate
+        self.isShooting = false
+    end
+end
+
+function player:manageAnimations(dt)
+    if self.isShooting then
         if not self.grounded then
             if self.directionY == -1 then
                 self.currentAnim = self.animations.shootJumpingUp
@@ -257,14 +262,14 @@ function player:shooting(dt)
                 end
             end
         end
-
-        if self.shootTimer > self.shootRate then
-            self.shootTimer = 0
-            self:shoot()
+    elseif not self.grounded then
+        self.currentAnim = self.animations.jumping
+    else
+        if self.moving then
+            self.currentAnim = self.animations.run
+        else
+            self.currentAnim = self.animations.idle
         end
-	else
-        self.shootTimer = self.shootRate
-        self.isShooting = false
     end
 end
 
@@ -274,10 +279,11 @@ function player:update(dt)
     end
 
     self:manageHit(dt)
+    self:manageAnimations(dt)
     self.currentAnim:update(dt)
+    self:syncPhysics()
     if self.dead then return end
 
-    self:syncPhysics()
     self:move(dt)
     self:inAir(dt)
     self:manageDirections()
@@ -286,10 +292,12 @@ end
 
 function player:draw()
     if self.hit and not self.dead then
-        love.graphics.setShader(shaders.hitFlashShader())
+        love.graphics.setShader(shaders.hitFlashShader(1,0,0))
     end
 
     self.currentAnim:draw(self.spriteSheet, self.x, self.y - self.height*1.25, nil, self.directionX, 1, self.height, 0)
     love.graphics.setShader()
     self:drawGizmos()
 end
+
+return player

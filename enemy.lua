@@ -1,7 +1,9 @@
-require 'shaders'
-require 'bulletEnemy'
-enemy = {}
+local bulletEnemy = require 'bulletEnemy'
+local anim8 = require 'libraries/anim8' --for animations
+local entity = require 'entity'
+local enemy = {}
 enemy.__index = enemy
+setmetatable(enemy, entity)
 
 function enemy.new(x, y, direction)
     local instance = setmetatable({}, enemy)
@@ -10,26 +12,12 @@ function enemy.new(x, y, direction)
     instance.y = y - instance.height/2
     instance.direction = direction
 
-    instance.hitTimer = 0
-    instance.hitDuration = 0.1
-    instance.maxHealth = 3
-    instance.currentHealth = instance.maxHealth
-    instance.hit = false
-
     instance.shootTimer = 0
     instance.shootRate = math.random(1,3) + math.random()
 
+    instance:setupHealth()
     instance:setupPhysics()
     return instance
-end
-
-function enemy:setupPhysics()
-    self.physics = {}
-    self.physics.body = love.physics.newBody(World, self.x, self.y, "dynamic")
-    self.physics.body:setFixedRotation(true)
-    self.physics.shape = love.physics.newRectangleShape(self.width, self.height)
-    self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape)
-    self.physics.fixture:setSensor(true)
 end
 
 function enemy:setupAnimations()
@@ -42,32 +30,9 @@ function enemy:setupAnimations()
     self.currentAnimation = self.animations.idle
 end
 
-function enemy:drawCollider()
-    love.graphics.setColor(0, 255, 0, 1)
-    love.graphics.rectangle('line', self.x - self.width/2, self.y - self.height/2, self.width, self.height)
-    love.graphics.setColor(255, 255, 255, 1)
-end
-
-function enemy:draw()
-    self:drawCollider()
-    if self.hit then
-        love.graphics.setShader(shaders.hitFlashShader())
-    end
-
-    self.currentAnimation:draw(self.spriteSheet, self.x, self.y - self.height/2, nil, self.direction, 1, self.height/2, 0)
-    love.graphics.setShader()
-end
-
-function enemy:manageHit(dt)
-    self.hitTimer = self.hitTimer + dt
-    if self.hitTimer > self.hitDuration and self.hit then
-        self.hit = false
-    end
-end
-
 function enemy:shoot()
     self.direction = self.direction * -1
-    local newbulletEnemy = bulletEnemy.new("bullet", self.x, self.y, self.direction)
+    local newbulletEnemy = bulletEnemy.new("bullet", self.x, self.y, self.direction, 0)
     table.insert(GameObjects, newbulletEnemy)
     table.insert(EnemyBullets, newbulletEnemy)
 end
@@ -83,14 +48,6 @@ function enemy:update(dt)
     end
 end
 
-function enemy:takeDmg(value)
-    self.hitTimer = 0
-    self.currentHealth = self.currentHealth - value
-    if self.currentHealth <= 0 then
-        self:destroy()
-    end
-end
-
 function enemy:destroy()
     for i, instance in ipairs(Enemies) do
         if instance == self then
@@ -99,14 +56,6 @@ function enemy:destroy()
     end
 
     removeGameobject(self)
-end
-
-function enemy:beginContact(a, b, collision)
-    
-end
-
-function enemy:endContact(a, b, collision)
-    
 end
 
 return enemy

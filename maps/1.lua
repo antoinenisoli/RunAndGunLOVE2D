@@ -143,7 +143,7 @@ return {
       width = 25,
       height = 25,
       id = 1,
-      name = "fg",
+      name = "ground",
       visible = true,
       opacity = 1,
       offsetx = 0,

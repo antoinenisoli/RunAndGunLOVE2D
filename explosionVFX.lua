@@ -1,4 +1,5 @@
-explosionVFX = {}
+local anim8 = require 'libraries/anim8' --for animations
+local explosionVFX = {}
 explosionVFX.__index = explosionVFX
 
 function explosionVFX.new(x, y)
@@ -43,3 +44,5 @@ end
 function explosionVFX:endContact(a, b, collision)
     
 end
+
+return explosionVFX
