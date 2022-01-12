@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="21">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="36">
  <editorsettings>
   <export target="1.lua" format="lua"/>
  </editorsettings>
@@ -11,6 +11,9 @@
  </tileset>
  <tileset firstgid="951" name="RPGmob" tilewidth="44" tileheight="44" tilecount="10" columns="10">
   <image source="tileset/RPGmob.png" width="440" height="44"/>
+ </tileset>
+ <tileset firstgid="961" name="SpriteSheet_player" tilewidth="45" tileheight="45" tilecount="56" columns="8">
+  <image source="tileset/SpriteSheet_player.png" width="360" height="315"/>
  </tileset>
  <layer id="5" name="bg" width="25" height="25">
   <data encoding="csv">
@@ -120,38 +123,39 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup color="#ff0000" id="6" name="enemies">
+ <objectgroup color="#aa00ff" id="6" name="entities">
   <properties>
    <property name="enemySpawner" type="bool" value="true"/>
   </properties>
-  <object id="14" x="206.125" y="369.625">
+  <object id="24" name="ExitTrigger" type="exit" x="343.667" y="154.333" width="35" height="37"/>
+  <object id="27" name="mob" type="enemy" gid="2147484599" x="35.9091" y="242.818" width="44" height="44">
    <properties>
-    <property name="enemySpawner" type="bool" value="true"/>
+    <property name="direction" type="int" value="-1"/>
    </properties>
-   <point/>
   </object>
-  <object id="15" x="179.375" y="273.625">
+  <object id="28" name="mob" type="enemy" gid="951" x="191.667" y="208.333" width="44" height="44">
    <properties>
-    <property name="enemySpawner" type="bool" value="true"/>
+    <property name="direction" type="int" value="1"/>
    </properties>
-   <point/>
   </object>
-  <object id="16" x="58.875" y="241.375">
+  <object id="29" name="mob" type="enemy" gid="951" x="178.667" y="370.667" width="44" height="44">
    <properties>
-    <property name="enemySpawner" type="bool" value="true"/>
+    <property name="direction" type="int" value="1"/>
    </properties>
-   <point/>
   </object>
-  <object id="17" x="234.375" y="208.625">
+  <object id="30" name="mob" type="enemy" gid="2147484599" x="146.333" y="275.333" width="44" height="44">
    <properties>
-    <property name="enemySpawner" type="bool" value="true"/>
+    <property name="direction" type="int" value="-1"/>
    </properties>
-   <point/>
   </object>
- </objectgroup>
- <objectgroup color="#0055ff" id="8" name="playerSpawner">
-  <object id="20" x="76" y="344">
-   <point/>
+  <object id="31" name="PlayerSpawn" type="player" gid="961" x="41.6667" y="351" width="45" height="45">
+   <properties>
+    <property name="direction" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="32" gid="685" x="352" y="352" width="16" height="16"/>
+  <object id="35" name="Ammo" type="ammo" x="342.25" y="281.75" width="21.5" height="22">
+   <ellipse/>
   </object>
  </objectgroup>
 </map>

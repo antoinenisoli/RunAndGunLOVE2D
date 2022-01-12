@@ -9,7 +9,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 9,
-  nextobjectid = 21,
+  nextobjectid = 36,
   properties = {},
   tilesets = {
     {
@@ -88,6 +88,32 @@ return {
       properties = {},
       wangsets = {},
       tilecount = 10,
+      tiles = {}
+    },
+    {
+      name = "SpriteSheet_player",
+      firstgid = 961,
+      tilewidth = 45,
+      tileheight = 45,
+      spacing = 0,
+      margin = 0,
+      columns = 8,
+      image = "tileset/SpriteSheet_player.png",
+      imagewidth = 360,
+      imageheight = 315,
+      objectalignment = "unspecified",
+      tileoffset = {
+        x = 0,
+        y = 0
+      },
+      grid = {
+        orientation = "orthogonal",
+        width = 45,
+        height = 45
+      },
+      properties = {},
+      wangsets = {},
+      tilecount = 56,
       tiles = {}
     }
   },
@@ -337,7 +363,7 @@ return {
       type = "objectgroup",
       draworder = "topdown",
       id = 6,
-      name = "enemies",
+      name = "entities",
       visible = true,
       opacity = 1,
       offsetx = 0,
@@ -349,89 +375,121 @@ return {
       },
       objects = {
         {
-          id = 14,
-          name = "",
-          type = "",
-          shape = "point",
-          x = 206.125,
-          y = 369.625,
-          width = 0,
-          height = 0,
+          id = 24,
+          name = "ExitTrigger",
+          type = "exit",
+          shape = "rectangle",
+          x = 343.667,
+          y = 154.333,
+          width = 35,
+          height = 37,
           rotation = 0,
           visible = true,
+          properties = {}
+        },
+        {
+          id = 27,
+          name = "mob",
+          type = "enemy",
+          shape = "rectangle",
+          x = 35.9091,
+          y = 242.818,
+          width = 44,
+          height = 44,
+          rotation = 0,
+          gid = 2147484599,
+          visible = true,
           properties = {
-            ["enemySpawner"] = true
+            ["direction"] = -1
           }
         },
         {
-          id = 15,
-          name = "",
-          type = "",
-          shape = "point",
-          x = 179.375,
-          y = 273.625,
-          width = 0,
-          height = 0,
+          id = 28,
+          name = "mob",
+          type = "enemy",
+          shape = "rectangle",
+          x = 191.667,
+          y = 208.333,
+          width = 44,
+          height = 44,
           rotation = 0,
+          gid = 951,
           visible = true,
           properties = {
-            ["enemySpawner"] = true
+            ["direction"] = 1
           }
         },
         {
-          id = 16,
-          name = "",
-          type = "",
-          shape = "point",
-          x = 58.875,
-          y = 241.375,
-          width = 0,
-          height = 0,
+          id = 29,
+          name = "mob",
+          type = "enemy",
+          shape = "rectangle",
+          x = 178.667,
+          y = 370.667,
+          width = 44,
+          height = 44,
           rotation = 0,
+          gid = 951,
           visible = true,
           properties = {
-            ["enemySpawner"] = true
+            ["direction"] = 1
           }
         },
         {
-          id = 17,
-          name = "",
-          type = "",
-          shape = "point",
-          x = 234.375,
-          y = 208.625,
-          width = 0,
-          height = 0,
+          id = 30,
+          name = "mob",
+          type = "enemy",
+          shape = "rectangle",
+          x = 146.333,
+          y = 275.333,
+          width = 44,
+          height = 44,
           rotation = 0,
+          gid = 2147484599,
           visible = true,
           properties = {
-            ["enemySpawner"] = true
+            ["direction"] = -1
           }
-        }
-      }
-    },
-    {
-      type = "objectgroup",
-      draworder = "topdown",
-      id = 8,
-      name = "playerSpawner",
-      visible = true,
-      opacity = 1,
-      offsetx = 0,
-      offsety = 0,
-      parallaxx = 1,
-      parallaxy = 1,
-      properties = {},
-      objects = {
+        },
         {
-          id = 20,
+          id = 31,
+          name = "PlayerSpawn",
+          type = "player",
+          shape = "rectangle",
+          x = 41.6667,
+          y = 351,
+          width = 45,
+          height = 45,
+          rotation = 0,
+          gid = 961,
+          visible = true,
+          properties = {
+            ["direction"] = 1
+          }
+        },
+        {
+          id = 32,
           name = "",
           type = "",
-          shape = "point",
-          x = 76,
-          y = 344,
-          width = 0,
-          height = 0,
+          shape = "rectangle",
+          x = 352,
+          y = 352,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          gid = 685,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 35,
+          name = "Ammo",
+          type = "ammo",
+          shape = "ellipse",
+          x = 342.25,
+          y = 281.75,
+          width = 21.5,
+          height = 22,
           rotation = 0,
           visible = true,
           properties = {}

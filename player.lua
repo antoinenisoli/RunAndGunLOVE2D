@@ -151,9 +151,9 @@ function player:syncPhysics()
 
     local screenBounds = 50
     if self.x >= screenWidth - screenBounds then
-        self.x = screenWidth - screenBounds
+        self.physics.body:setPosition(screenWidth - screenBounds, self.y)
     elseif self.x <= screenBounds/4 then
-        self.x = screenBounds/4
+        self.physics.body:setPosition(screenBounds/4, self.y)
     end
 
     self.shootPos.x = self.x + (15 * self.directionX)
@@ -175,6 +175,7 @@ function player:respawn()
     print("respawn");
     self.dead = false
     self.currentHealth = self.maxHealth
+    spawnPlayer()
 end
 
  function player:takeDmg(value)
@@ -231,7 +232,12 @@ function player:shooting(dt)
     end
 end
 
-function player:manageAnimations(dt)
+function player:manageAnimations()
+    if self.dead and self.currentAnim ~= self.animations.death then
+        self.currentAnim = self.animations.death
+        do return end
+    end
+
     if self.isShooting then
         if not self.grounded then
             if self.directionY == -1 then
@@ -274,12 +280,8 @@ function player:manageAnimations(dt)
 end
 
 function player:update(dt)
-    if self.dead and self.currentAnim ~= self.animations.death then
-        self.currentAnim = self.animations.death
-    end
-
+    self:manageAnimations()
     self:manageHit(dt)
-    self:manageAnimations(dt)
     self.currentAnim:update(dt)
     self:syncPhysics()
     if self.dead then return end

@@ -1,9 +1,9 @@
+love.graphics.setDefaultFilter('nearest', 'nearest')
 local sti = require('libraries/sti') --for tilemaps
 local player = require 'player'
 local enemy = require 'enemy'
 local Camera = require 'Camera'
 
-local worldScale = 1.5
 local background = love.graphics.newImage('assets/sprites/Assets_area_1/Background/subway_BG.png')
 screenWidth = 992
 screenHeight = 544
@@ -14,14 +14,14 @@ Enemies = {}
 local playerSpawner = {}
 
 local function spawnEnemies()
-    for i, spawner in ipairs(Map.layers.enemies.objects) do
-        if spawner.properties.enemySpawner then
+    for i, spawner in ipairs(Map.layers.entities.objects) do
+        if spawner.type == "enemy" then
             local dir = -1
             if math.random(0,100) > 50 then
                 dir = 1
             end
 
-            local newEnemy = enemy.new(spawner.x, spawner.y, dir)
+            local newEnemy = enemy.new(spawner.x, spawner.y, spawner.properties.direction)
             table.insert(GameObjects, newEnemy)
             table.insert(Enemies, newEnemy)
         end
@@ -33,7 +33,6 @@ function spawnPlayer()
 end
 
 local function setupGame()
-    love.graphics.setDefaultFilter('nearest', 'nearest')
     love.window.setMode(screenWidth, screenHeight)
     Map = sti("maps/1.lua", {"box2d"})
     mapWidth = Map.layers.ground.width * 16
@@ -48,10 +47,13 @@ function love.load()
     math.randomseed(os.time())
     setupGame()
     player:load() 
-    for i, spawner in ipairs(Map.layers.playerSpawner.objects) do
-        playerSpawner.x = spawner.x
-        playerSpawner.y = spawner.y
-        spawnPlayer()
+    for i, spawner in ipairs(Map.layers.entities.objects) do
+        if spawner.type == "player" then
+            playerSpawner.x = spawner.x
+            playerSpawner.y = spawner.y
+            player.directionX = spawner.properties.direction
+            spawnPlayer()
+        end
     end
 
     love.window.setTitle('Run&Gun')
