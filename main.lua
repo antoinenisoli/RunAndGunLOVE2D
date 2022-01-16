@@ -11,16 +11,10 @@ GameObjects = {}
 PlayerBullets = {}
 EnemyBullets = {}
 Enemies = {}
-local playerSpawner = {}
 
 local function spawnEnemies()
     for i, spawner in ipairs(Map.layers.entities.objects) do
         if spawner.type == "enemy" then
-            local dir = -1
-            if math.random(0,100) > 50 then
-                dir = 1
-            end
-
             local newEnemy = enemy.new(spawner.x, spawner.y, spawner.properties.direction)
             table.insert(GameObjects, newEnemy)
             table.insert(Enemies, newEnemy)
@@ -28,18 +22,18 @@ local function spawnEnemies()
     end
 end
 
-function spawnPlayer()
-    player.physics.body:setPosition(playerSpawner.x, playerSpawner.y)
-end
-
-local function setupGame()
-    love.window.setMode(screenWidth, screenHeight)
+local function setupMap()
     Map = sti("maps/1.lua", {"box2d"})
     mapWidth = Map.layers.ground.width * 16
     World = love.physics.newWorld(0, 0)
     World:setCallbacks(beginContact, endContact)
     Map:box2d_init(World)
-    --Map.layers.solid.visible = false
+    Map.layers.solid.visible = false
+    Map.layers.entities.visible = false
+end
+
+local function setupGame()
+    setupMap()
     spawnEnemies()
 end
 
@@ -49,10 +43,7 @@ function love.load()
     player:load() 
     for i, spawner in ipairs(Map.layers.entities.objects) do
         if spawner.type == "player" then
-            playerSpawner.x = spawner.x
-            playerSpawner.y = spawner.y
-            player.directionX = spawner.properties.direction
-            spawnPlayer()
+            player:spawn(spawner.properties.direction, spawner.x, spawner.y)
         end
     end
 
@@ -110,7 +101,7 @@ function love.update(dt)
         instance:update(dt)
     end
 
-    Camera.setPosition(player.x, 0)
+    Camera:setPosition(player.x, player.y)
     love.keyboard.keysPressed = {}
 end
 
@@ -118,14 +109,13 @@ function love.draw()
     love.graphics.draw(background, screenWidth/2, screenHeight/2, nil, 2, 2, background:getWidth()/2, background:getHeight()/2)
     Map:draw(-Camera.x, -Camera.y, Camera.scale)
 
-    Camera.apply()
-    love.graphics.scale(Camera.scale, Camera.scale)
+    Camera:apply()
     player:draw()
     for i, instance in ipairs(GameObjects) do
         instance:draw()
     end
 
-    Camera.clear()
+    Camera:clear()
     love.graphics.print(player.x, 10, 10)
 end
 

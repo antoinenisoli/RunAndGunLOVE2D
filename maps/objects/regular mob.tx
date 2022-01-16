@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <object name="regular mob" type="enemy">
+  <properties>
+   <property name="direction" type="int" value="-1"/>
+  </properties>
+  <point/>
+ </object>
+</template>

@@ -42,6 +42,10 @@ function player:setupPhysics()
     self.jumpForce = -350
     self.grounded = false;
 
+    self.startPosition = {}
+    self.startPosition.x = self.x
+    self.startPosition.y = self.y
+
     self.physics = {}
     self.physics.body = love.physics.newBody(World, self.x, self.y, "dynamic")
     self.physics.body:setFixedRotation(true)
@@ -53,7 +57,7 @@ function player:setupHealth()
     self.dead = false
     self.hitTimer = 0
     self.hitDuration = 0.1
-    self.maxHealth = 1
+    self.maxHealth = 10
     self.currentHealth = self.maxHealth
     self.hit = false
 end
@@ -168,14 +172,22 @@ end
 
 function player:destroy()
     self.dead = true
-    self:respawn()
+end
+
+function player:spawn(direction, x, y)
+    self.startPosition.x = x
+    self.startPosition.y = y
+    self.directionX = direction
+    self.physics.body:setPosition(x, y)
 end
 
 function player:respawn()
-    print("respawn");
-    self.dead = false
-    self.currentHealth = self.maxHealth
-    spawnPlayer()
+    if self.dead then
+        self.physics.body:setPosition(self.startPosition.x, self.startPosition.y)
+        self:setupHealth()
+        self.grounded = false
+        self.yVel = 0
+    end
 end
 
  function player:takeDmg(value)
@@ -284,6 +296,7 @@ function player:update(dt)
     self:manageHit(dt)
     self.currentAnim:update(dt)
     self:syncPhysics()
+    self:respawn()
     if self.dead then return end
 
     self:move(dt)

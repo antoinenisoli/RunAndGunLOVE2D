@@ -1,7 +1,9 @@
 local Camera = {
     x = 0,
     y = 0,
-    scale = 2,
+    offsetX = 0,
+    offsetY = -350,
+    scale = 1.5,
 }
 
 function Camera:apply()
@@ -15,7 +17,7 @@ function Camera:clear()
 end
 
 function Camera:setPosition(x, y)
-    self.x = x - love.graphics.getWidth() / 2 / self.scale
+    self.x = x - (love.graphics.getWidth() / 2) / self.scale
     self.y = y
     local rs = self.x + love.graphics.getWidth() / 2
 
@@ -24,6 +26,9 @@ function Camera:setPosition(x, y)
     elseif rs > mapWidth then
         self.x = mapWidth - love.graphics.getWidth() / 2
     end
+
+    self.x = self.x + self.offsetX
+    self.y = self.y + self.offsetY
 end
 
 return Camera

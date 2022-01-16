@@ -39,6 +39,7 @@ end
 
 function enemy:update(dt)
     self.currentAnimation:update(dt)
+    self:syncPhysics()
     self:manageHit(dt)
 
     self.shootTimer = self.shootTimer + dt

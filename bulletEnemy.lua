@@ -9,7 +9,7 @@ function bulletEnemy.new(name, x, y, directionX, directionY)
     instance.x = x
     instance.y = y
     instance.name = name
-    instance.speed = 200
+    instance.speed = 250
     instance.directionX = directionX
     instance.directionY = directionY
     instance.timer = 0
