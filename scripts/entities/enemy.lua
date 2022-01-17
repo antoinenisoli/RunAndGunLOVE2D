@@ -1,6 +1,6 @@
-local bulletEnemy = require 'bulletEnemy'
+local bulletEnemy = require 'scripts/bullets/bulletEnemy'
 local anim8 = require 'libraries/anim8' --for animations
-local entity = require 'entity'
+local entity = require 'scripts/entities/entity'
 local enemy = {}
 enemy.__index = enemy
 setmetatable(enemy, entity)

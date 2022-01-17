@@ -1,12 +1,12 @@
 local shaders = require 'shaders'
 local anim8 = require 'libraries/anim8' --for animations
-local bulletPlayer = require 'bulletPlayer'
+local bulletPlayer = require 'scripts/bullets/bulletPlayer'
 local player = {}
 
 function player:setupAnimations()
     self.sprite = love.graphics.newImage('assets/sprites/tile000.png')
     self.spriteSheet = love.graphics.newImage('assets/sprites/SpriteSheet_player.png')
-    self.grid = anim8.newGrid( 45, 45, self.spriteSheet:getWidth(), self.spriteSheet:getHeight() )
+    self.grid = anim8.newGrid(45, 45, self.spriteSheet:getWidth(), self.spriteSheet:getHeight() )
 
     self.animations = {}
     self.animations.idle = anim8.newAnimation(self.grid('1-6', 1), 0.1)
@@ -29,8 +29,8 @@ function player:setupAnimations()
 end
 
 function player:setupPhysics()
-    self.x = screenWidth/2 - 400
-    self.y = 200
+    self.x = 0
+    self.y = 0
     self.width = 15
     self.height = 25
     self.xVel = 0
@@ -153,9 +153,9 @@ function player:syncPhysics()
     self.x, self.y = self.physics.body:getPosition() 
     self.physics.body:setLinearVelocity(self.xVel, self.yVel)  
 
-    local screenBounds = 50
-    if self.x >= screenWidth - screenBounds then
-        self.physics.body:setPosition(screenWidth - screenBounds, self.y)
+    local screenBounds = 25
+    if self.x >= mapWidth - screenBounds then
+        self.physics.body:setPosition(mapWidth - screenBounds, self.y)
     elseif self.x <= screenBounds/4 then
         self.physics.body:setPosition(screenBounds/4, self.y)
     end

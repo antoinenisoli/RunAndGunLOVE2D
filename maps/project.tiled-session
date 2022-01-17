@@ -5,8 +5,8 @@
     },
     "activeFile": "level01tilemap.tmx",
     "expandedProjectPaths": [
-        "objects",
-        "."
+        ".",
+        "objects"
     ],
     "fileStates": {
         "": {
@@ -42,11 +42,11 @@
             "scaleInDock": 2
         },
         "level01tilemap.tmx": {
-            "scale": 1,
-            "selectedLayer": 3,
+            "scale": 0.75,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 232.5,
-                "y": 402.5
+                "x": 940.6666666666666,
+                "y": 357.33333333333337
             }
         },
         "level01tilemap.tmx#RPGmob": {
@@ -60,13 +60,16 @@
             "scaleInDock": 3,
             "scaleInEditor": 1
         },
+        "level01tilemap.tmx#Water+": {
+            "scaleInDock": 2
+        },
         "level01tilemap.tmx#tiles_out": {
-            "scaleInDock": 1.5
+            "scaleInDock": 2
         }
     },
-    "last.exportedFilePath": "C:/Users/Acer/Documents/ProjetsPerso/LOVE2DProjects/RunAndGun/RunAndGunProject/maps",
+    "last.exportedFilePath": "C:/Users/Nisol/Documents/ProjetsPerso/LOVE2D/RunAndGun/RunAndGunProject/maps",
     "last.externalTilesetPath": "C:/Users/Acer/Documents/ProjetsPerso/LOVE2DProjects/RunAndGun/RunAndGunProject/assets/sprites/Player",
-    "last.imagePath": "C:/Users/Acer/Documents/ProjetsPerso/Assets/run&gun/Player",
+    "last.imagePath": "C:/Users/Nisol/Documents/ProjetsPerso/LOVE2D/RunAndGun/RunAndGunProject/maps/tileset",
     "last.objectTemplatePath": "C:/Users/Acer/Documents/ProjetsPerso/LOVE2DProjects/RunAndGun/RunAndGunProject/maps/objects",
     "last.worldFilePath": "C:/Users/Acer/Documents/ProjetsPerso/LOVE2DProjects/RunAndGun/RunAndGunProject/maps",
     "loadedWorlds": [
@@ -91,7 +94,7 @@
     "tileset.embedInMap": true,
     "tileset.lastUsedFilter": "All Files (*)",
     "tileset.tileSize": {
-        "height": 45,
-        "width": 45
+        "height": 16,
+        "width": 16
     }
 }

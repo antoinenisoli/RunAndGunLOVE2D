@@ -1,4 +1,4 @@
-local bullet = require 'bullet'
+local bullet = require 'scripts/bullets/bullet'
 local bulletPlayer = {}
 bulletPlayer.__index = bulletPlayer
 setmetatable(bulletPlayer, bullet)

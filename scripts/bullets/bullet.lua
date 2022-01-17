@@ -1,4 +1,5 @@
 local explosionVFX = require 'explosionVFX'
+local Camera = require 'Camera'
 local bullet = {}
 bullet.__index = bullet
 
@@ -94,14 +95,6 @@ function bullet:update(dt)
 
     self.timer = self.timer + dt
     if self.timer > self.lifetime then
-        self.toBeRemoved = true
-    end
-
-    local screenBounds = 50
-    if self.x >= screenWidth - screenBounds or self.x <= screenBounds/4 then
-        self.toBeRemoved = true
-    end
-    if self.y >= screenHeight - screenBounds or self.y <= screenBounds/4 then
         self.toBeRemoved = true
     end
 end

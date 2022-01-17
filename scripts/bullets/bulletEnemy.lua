@@ -1,5 +1,5 @@
-local bullet = require 'bullet'
-local player = require 'player'
+local bullet = require 'scripts/bullets/bullet'
+local player = require 'scripts/entities/player'
 local bulletEnemy = {}
 bulletEnemy.__index = bulletEnemy
 setmetatable(bulletEnemy, bullet)

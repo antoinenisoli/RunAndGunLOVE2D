@@ -1,8 +1,8 @@
 local Camera = {
     x = 0,
     y = 0,
-    offsetX = 0,
-    offsetY = -350,
+    offsetX = 50,
+    offsetY = -300,
     scale = 1.5,
 }
 
@@ -17,18 +17,24 @@ function Camera:clear()
 end
 
 function Camera:setPosition(x, y)
-    self.x = x - (love.graphics.getWidth() / 2) / self.scale
-    self.y = y
-    local rs = self.x + love.graphics.getWidth() / 2
+    self.x = (x + self.offsetX) - (screenWidth / 2) / self.scale
+    self.y = y + self.offsetY
+    local currentPosX = self.x + (screenWidth / 2)
 
     if self.x < 0 then
         self.x = 0
-    elseif rs > mapWidth then
-        self.x = mapWidth - love.graphics.getWidth() / 2
+    elseif currentPosX > mapWidth then
+        self.x = mapWidth - (screenWidth / 2)
     end
 
-    self.x = self.x + self.offsetX
-    self.y = self.y + self.offsetY
+    local currentPosY = self.y + (screenHeight / 2)
+    if self.y < 0 then
+        self.y = 0
+    elseif currentPosY > mapHeight then
+        self.y = mapHeight - (screenHeight / 2)
+    end
+
+    
 end
 
 return Camera

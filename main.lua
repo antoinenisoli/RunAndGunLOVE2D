@@ -1,7 +1,7 @@
 love.graphics.setDefaultFilter('nearest', 'nearest')
 local sti = require('libraries/sti') --for tilemaps
-local player = require 'player'
-local enemy = require 'enemy'
+local player = require 'scripts/entities/player'
+local enemy = require 'scripts/entities/enemy'
 local Camera = require 'Camera'
 
 local background = love.graphics.newImage('assets/sprites/Assets_area_1/Background/subway_BG.png')
@@ -25,6 +25,7 @@ end
 local function setupMap()
     Map = sti("maps/1.lua", {"box2d"})
     mapWidth = Map.layers.ground.width * 16
+    mapHeight = Map.layers.ground.height * 16
     World = love.physics.newWorld(0, 0)
     World:setCallbacks(beginContact, endContact)
     Map:box2d_init(World)
