@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="120" height="36" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="62">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="120" height="36" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="100">
  <editorsettings>
   <export target="1.lua" format="lua"/>
  </editorsettings>
@@ -72,8 +72,8 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,265,266,267,268,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,190,191,191,192,193,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,217,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,3,4,0,0,0,242,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,27,28,29,0,0,0,267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,242,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,267,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 3,3,3,31,3,3,3,3,31,3,3,3,3,3,3,31,3,3,3,3,3,31,3,3,4,0,0,0,0,0,2,3,31,3,3,3,3,3,3,3,3,31,3,3,3,3,4,0,0,0,0,0,0,0,0,0,2,3,3,3,3,31,3,3,3,3,3,3,3,4,0,0,0,0,0,0,0,0,0,2,3,3,3,3,3,3,3,3,3,3,3,3,3,31,3,3,3,3,3,3,3,3,3,3,3,3,3,3,31,4,0,0,0,0,0,0,0,0,0,0,
 28,28,28,56,28,28,28,28,56,28,28,28,28,28,28,56,28,28,28,28,28,56,28,28,55,1097,1097,1097,1097,1097,51,28,56,28,28,28,28,28,28,28,28,56,28,28,28,28,55,0,0,0,0,0,0,0,0,0,51,28,28,28,28,56,28,28,28,28,28,28,28,55,0,0,0,0,0,0,0,0,0,51,28,28,28,28,28,28,28,28,28,28,28,28,28,56,28,28,28,28,28,28,28,28,28,28,28,28,28,28,56,55,0,0,0,0,0,0,2,3,4,0,
 53,53,53,81,53,53,53,53,81,53,53,53,53,53,53,81,53,53,53,53,53,81,53,53,55,1110,1041,1041,1109,1041,51,53,81,53,53,53,53,53,53,53,53,81,53,53,53,53,55,0,0,0,0,0,0,0,0,0,51,53,53,53,53,81,53,53,53,53,53,53,53,55,0,0,0,0,0,0,0,0,0,51,53,53,53,53,53,53,53,53,53,53,53,53,53,81,53,53,53,53,53,53,53,53,53,53,53,53,53,53,81,55,0,0,0,0,0,0,51,28,55,0,
@@ -102,7 +102,7 @@
   <properties>
    <property name="collidable" type="bool" value="true"/>
   </properties>
-  <object id="2" x="0" y="227" width="400" height="14">
+  <object id="2" x="0" y="227" width="400" height="77">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
@@ -117,16 +117,6 @@
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="8" x="273" y="195" width="46.125" height="31.9507">
-   <properties>
-    <property name="collidable" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="10" x="322" y="160" width="77.9432" height="15.428">
-   <properties>
-    <property name="collidable" type="bool" value="true"/>
-   </properties>
-  </object>
   <object id="11" x="146" y="64" width="141.917" height="16">
    <properties>
     <property name="collidable" type="bool" value="true"/>
@@ -137,12 +127,12 @@
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="48" x="480" y="227" width="272" height="11">
+  <object id="48" x="480" y="227" width="272" height="156">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="50" x="0" y="516" width="560" height="12">
+  <object id="50" x="0" y="516" width="1040" height="60">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
@@ -152,17 +142,12 @@
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="52" x="560" y="500" width="80" height="16">
+  <object id="52" x="561" y="500" width="478" height="16">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
   <object id="54" x="624" y="484" width="272" height="16">
-   <properties>
-    <property name="collidable" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="55" x="896" y="500" width="144" height="8">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
@@ -182,30 +167,87 @@
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="59" x="752" y="275" width="144" height="11">
+  <object id="59" x="752" y="275" width="144" height="108">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="60" x="741" y="238" width="11" height="48">
+  <object id="61" x="896" y="228" width="223" height="108">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="61" x="896" y="238" width="12" height="48">
+  <object id="64" x="1119" y="275" width="224" height="61">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
+  <object id="65" x="1407" y="288" width="274" height="32">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="66" x="1393" y="499" width="527" height="77">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="70" x="1265" y="227" width="495" height="61">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="75" template="objects/groundBlock.tx" x="1858" y="243">
+   <properties>
+    <property name="oneWay" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="77" template="objects/groundBlock.tx" x="1761" y="307" width="62" height="29">
+   <properties>
+    <property name="oneWay" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="78" template="objects/groundBlock.tx" x="1857" y="355" width="62" height="13">
+   <properties>
+    <property name="oneWay" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="79" template="objects/groundBlock.tx" x="1777" y="403">
+   <properties>
+    <property name="oneWay" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="80" template="objects/groundBlock.tx" x="1857" y="451" width="62" height="45">
+   <properties>
+    <property name="oneWay" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="90" template="objects/groundBlock.tx" x="384" y="300" width="96" height="20">
+   <properties>
+    <property name="oneWay" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="96" template="objects/groundBlock.tx" x="321" y="159" width="78" height="16">
+   <properties>
+    <property name="oneWay" type="bool" value="true"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup color="#ff0000" id="10" name="triggers">
+  <object id="81" template="objects/waterTrigger.tx" x="400" y="240"/>
+  <object id="82" template="objects/waterTrigger.tx" x="1040" y="512" width="353" height="60"/>
+  <object id="83" template="objects/ExitTrigger.tx" name="Exit" type="exitTrigger" x="348" y="15" width="25" height="33"/>
+  <object id="35" template="objects/ammoTrigger.tx" x="8" y="77"/>
+  <object id="91" template="objects/ammoTrigger.tx" x="756" y="462"/>
+  <object id="92" template="objects/ammoTrigger.tx" x="197" y="477"/>
+  <object id="93" template="objects/ammoTrigger.tx" x="1871" y="221"/>
+  <object id="94" template="objects/ammoTrigger.tx" x="832" y="253"/>
+  <object id="95" template="objects/ammoTrigger.tx" x="797" y="253"/>
  </objectgroup>
  <objectgroup color="#aa00ff" id="6" name="entities">
   <properties>
    <property name="enemySpawner" type="bool" value="true"/>
   </properties>
-  <object id="24" name="ExitTrigger" type="exit" x="343" y="11" width="35" height="37"/>
-  <object id="35" name="Ammo" type="ammo" x="342" y="138" width="21.5" height="22">
-   <ellipse/>
-  </object>
   <object id="37" template="objects/regular mob.tx" x="223" y="64"/>
   <object id="40" template="objects/Player Spawn.tx" x="89" y="482"/>
   <object id="44" template="objects/regular mob.tx" x="60" y="99">
@@ -220,6 +262,36 @@
    </properties>
   </object>
   <object id="47" template="objects/regular mob.tx" x="311" y="48">
+   <properties>
+    <property name="direction" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="84" template="objects/regular mob.tx" x="1592" y="499">
+   <properties>
+    <property name="direction" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="85" template="objects/regular mob.tx" x="1669" y="499">
+   <properties>
+    <property name="direction" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="86" template="objects/regular mob.tx" x="1800" y="403">
+   <properties>
+    <property name="direction" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="87" template="objects/regular mob.tx" x="1330" y="227">
+   <properties>
+    <property name="direction" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="88" template="objects/regular mob.tx" x="1140" y="275">
+   <properties>
+    <property name="direction" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="89" template="objects/regular mob.tx" x="1176" y="274">
    <properties>
     <property name="direction" type="int" value="1"/>
    </properties>

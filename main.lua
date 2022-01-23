@@ -3,6 +3,7 @@ local sti = require('libraries/sti') --for tilemaps
 local player = require 'scripts/entities/player'
 local enemy = require 'scripts/entities/enemy'
 local Camera = require 'Camera'
+local ammoPack = require 'scripts/collectibles/ammoPack'
 
 local background = love.graphics.newImage('assets/sprites/Assets_area_1/Background/subway_BG.png')
 screenWidth = 992
@@ -12,12 +13,23 @@ PlayerBullets = {}
 EnemyBullets = {}
 Enemies = {}
 
-local function spawnEnemies()
+local function spawnEntities()
     for i, spawner in ipairs(Map.layers.entities.objects) do
         if spawner.type == "enemy" then
             local newEnemy = enemy.new(spawner.x, spawner.y, spawner.properties.direction)
             table.insert(GameObjects, newEnemy)
             table.insert(Enemies, newEnemy)
+        end
+    end
+
+    for i, spawner in ipairs(Map.layers.triggers.objects) do
+        if spawner.type == "ammoTrigger" then
+            local newammoPack = ammoPack.new(spawner.x, spawner.y, spawner.width, spawner.height)
+            table.insert(GameObjects, newammoPack)
+        elseif spawner.type == "exitTrigger" then
+
+        elseif spawner.type == "waterTrigger" then
+
         end
     end
 end
@@ -29,13 +41,17 @@ local function setupMap()
     World = love.physics.newWorld(0, 0)
     World:setCallbacks(beginContact, endContact)
     Map:box2d_init(World)
-    Map.layers.solid.visible = false
-    Map.layers.entities.visible = false
+
+    for index, value in ipairs(Map.layers) do
+        if value ~= Map.layers.ground then
+            value.visible = false
+        end
+    end
 end
 
 local function setupGame()
     setupMap()
-    spawnEnemies()
+    spawnEntities()
 end
 
 function love.load()

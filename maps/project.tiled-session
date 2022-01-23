@@ -42,11 +42,11 @@
             "scaleInDock": 2
         },
         "level01tilemap.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 2,
+            "scale": 11,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 940.6666666666666,
-                "y": 357.33333333333337
+                "x": 219.04545454545456,
+                "y": 480.5909090909091
             }
         },
         "level01tilemap.tmx#RPGmob": {
@@ -67,7 +67,7 @@
             "scaleInDock": 2
         }
     },
-    "last.exportedFilePath": "C:/Users/Nisol/Documents/ProjetsPerso/LOVE2D/RunAndGun/RunAndGunProject/maps",
+    "last.exportedFilePath": "C:/Users/Acer/Documents/ProjetsPerso/LOVE2DProjects/RunAndGun/RunAndGunProject/maps",
     "last.externalTilesetPath": "C:/Users/Acer/Documents/ProjetsPerso/LOVE2DProjects/RunAndGun/RunAndGunProject/assets/sprites/Player",
     "last.imagePath": "C:/Users/Nisol/Documents/ProjetsPerso/LOVE2D/RunAndGun/RunAndGunProject/maps/tileset",
     "last.objectTemplatePath": "C:/Users/Acer/Documents/ProjetsPerso/LOVE2DProjects/RunAndGun/RunAndGunProject/maps/objects",
