@@ -1,5 +1,4 @@
 local explosionVFX = require 'explosionVFX'
-local Camera = require 'Camera'
 local bullet = {}
 bullet.__index = bullet
 
@@ -54,7 +53,12 @@ function bullet:endContact(a, b, collision)
     
 end
 
-function bullet:checkRemove()
+function bullet:checkRemove(dt)
+    self.timer = self.timer + dt
+    if self.timer > self.lifetime then
+        self.toBeRemoved = true
+    end
+
     if self.toBeRemoved then
         self:remove()
     end
@@ -91,12 +95,7 @@ end
 
 function bullet:update(dt)
     self:syncPhysics(dt)
-    self:checkRemove()
-
-    self.timer = self.timer + dt
-    if self.timer > self.lifetime then
-        self.toBeRemoved = true
-    end
+    self:checkRemove(dt)
 end
 
 return bullet

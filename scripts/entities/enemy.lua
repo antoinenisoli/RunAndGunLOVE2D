@@ -21,7 +21,7 @@ function enemy.new(x, y, direction)
 end
 
 function enemy:setupAnimations()
-    self.spriteSheet = love.graphics.newImage('assets/sprites/Enemies/ARMob.png')
+    self.spriteSheet = love.graphics.newImage('assets/sprites/Characters/Enemies/ARMob.png')
     self.width = 16
     self.height = 38
     self.grid = anim8.newGrid(32, 38, self.spriteSheet:getWidth(), self.spriteSheet:getHeight())
@@ -31,6 +31,7 @@ function enemy:setupAnimations()
 end
 
 function enemy:shoot()
+    --soundManager.shoot(0.3)
     self.direction = self.direction * -1
     local newbulletEnemy = bulletEnemy.new("bullet", self.x, self.y, self.direction, 0)
     table.insert(GameObjects, newbulletEnemy)

@@ -3,6 +3,8 @@ local sti = require('libraries/sti') --for tilemaps
 local player = require 'scripts/entities/player'
 local enemy = require 'scripts/entities/enemy'
 local Camera = require 'Camera'
+local soundManager = require 'scripts/sounds/soundManager'
+local healthPack = require 'scripts/collectibles/healthPack'
 local ammoPack = require 'scripts/collectibles/ammoPack'
 
 local background = love.graphics.newImage('assets/sprites/Assets_area_1/Background/subway_BG.png')
@@ -21,15 +23,20 @@ local function spawnEntities()
             table.insert(Enemies, newEnemy)
         end
     end
+end
 
+local function spawnTriggers()
     for i, spawner in ipairs(Map.layers.triggers.objects) do
         if spawner.type == "ammoTrigger" then
             local newammoPack = ammoPack.new(spawner.x, spawner.y, spawner.width, spawner.height)
             table.insert(GameObjects, newammoPack)
         elseif spawner.type == "exitTrigger" then
-
+            --
         elseif spawner.type == "waterTrigger" then
-
+            --
+        elseif spawner.type == "healthPack" then
+            local newHealthPack = healthPack.new(spawner.x, spawner.y, spawner.width, spawner.height)
+            table.insert(GameObjects, newHealthPack)
         end
     end
 end
@@ -50,21 +57,24 @@ local function setupMap()
 end
 
 local function setupGame()
+    soundManager:load()
     setupMap()
     spawnEntities()
+    spawnTriggers()
 end
 
 function love.load()
     math.randomseed(os.time())
+    love.window.setTitle('Run&Gun')
     setupGame()
     player:load() 
+
     for i, spawner in ipairs(Map.layers.entities.objects) do
         if spawner.type == "player" then
             player:spawn(spawner.properties.direction, spawner.x, spawner.y)
         end
     end
 
-    love.window.setTitle('Run&Gun')
     love.keyboard.keysPressed = {}
 end
 
@@ -133,6 +143,6 @@ function love.draw()
     end
 
     Camera:clear()
-    love.graphics.print(player.x, 10, 10)
+    love.graphics.print(player.ammo, 10, 10)
 end
 

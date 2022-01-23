@@ -42,11 +42,11 @@
             "scaleInDock": 2
         },
         "level01tilemap.tmx": {
-            "scale": 11,
+            "scale": 0.75,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 219.04545454545456,
-                "y": 480.5909090909091
+                "x": 378,
+                "y": 328.66666666666663
             }
         },
         "level01tilemap.tmx#RPGmob": {

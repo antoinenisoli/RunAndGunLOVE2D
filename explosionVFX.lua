@@ -7,7 +7,7 @@ function explosionVFX.new(x, y)
     instance.x = x
     instance.y = y
     
-    instance.spriteSheet = love.graphics.newImage('assets/sprites/Enemies/Explosion_Particle.png')
+    instance.spriteSheet = love.graphics.newImage('assets/sprites/Explosion_Particle.png')
     instance.width = 32
     instance.height = 32
     instance.grid = anim8.newGrid(instance.width, instance.height, instance.spriteSheet:getWidth(), instance.spriteSheet:getHeight())

@@ -2,8 +2,8 @@ local Camera = {
     x = 0,
     y = 0,
     offsetX = 50,
-    offsetY = -300,
-    scale = 1.5,
+    offsetY = -200,
+    scale = 1.8,
 }
 
 function Camera:apply()
@@ -33,8 +33,6 @@ function Camera:setPosition(x, y)
     elseif currentPosY > mapHeight then
         self.y = mapHeight - (screenHeight / 2)
     end
-
-    
 end
 
 return Camera

@@ -4,8 +4,8 @@ local bulletPlayer = require 'scripts/bullets/bulletPlayer'
 local player = {}
 
 function player:setupAnimations()
-    self.sprite = love.graphics.newImage('assets/sprites/tile000.png')
-    self.spriteSheet = love.graphics.newImage('assets/sprites/SpriteSheet_player.png')
+    self.sprite = love.graphics.newImage('assets/sprites/Characters/tile000.png')
+    self.spriteSheet = love.graphics.newImage('assets/sprites/Characters/SpriteSheet_player.png')
     self.grid = anim8.newGrid(45, 45, self.spriteSheet:getWidth(), self.spriteSheet:getHeight() )
 
     self.animations = {}
@@ -62,14 +62,19 @@ function player:setupHealth()
     self.hit = false
 end
 
+function player:setupFight()
+    self.maxAmmo = 20
+    self.ammo = self.maxAmmo
+    self.shootRate = 0.2
+    self.shootTimer = self.shootRate
+    self.isShooting = false
+end
+
 function player:load()
     self.directionX = 1
     self.directionY = 0
 
-    self.shootRate = 0.2
-    self.shootTimer = self.shootRate
-    self.isShooting = false
-
+    self:setupFight()
     self:setupPhysics()
     self:setupAnimations()
     self:setupHealth()
@@ -193,6 +198,7 @@ end
  function player:takeDmg(value)
     self.hitTimer = 0
     self.currentHealth = self.currentHealth - value
+    soundManager.playSound("assets/sounds/8bit Sound Pack/Arrow.mp3", 1)
     if self.currentHealth <= 0 then
         self:destroy()
     end
@@ -201,9 +207,11 @@ end
 function player:shoot()
     if self.dead then return end
 
+    self.ammo = self.ammo - 1
     local newbulletPlayer = bulletPlayer.new("bullet", self.shootPos.x, self.shootPos.y, self.directionX, self.directionY)
     table.insert(GameObjects, newbulletPlayer)
     table.insert(PlayerBullets, newbulletPlayer)
+    soundManager.shoot(1)
 end
 
 function player:applyFriction(dt)
@@ -218,6 +226,7 @@ function player:jump()
     if self.grounded then
         self.yVel = self.jumpForce
         self.grounded = false
+        soundManager.playSound("assets/sounds/8bit Sound Pack/Jump3.mp3", 0.5)
     end
 end
 
@@ -230,7 +239,7 @@ function player:drawGizmos()
 end
 
 function player:shooting(dt)
-    if love.mouse.isDown(1) then
+    if love.mouse.isDown(1) and self.ammo > 0 then
 		self.shootTimer = self.shootTimer + dt   
         self.isShooting = true     
 
